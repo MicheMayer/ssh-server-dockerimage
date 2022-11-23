@@ -1,4 +1,4 @@
-# ssh-server-dockerimage
+# Docker Definition for SSH Server
 **Docker image creates a simple ssh server for testing purposes**
 
 This server is not intended for a production environment. It is not configured with security in mind. Customize on your own.
