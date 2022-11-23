@@ -1,4 +1,4 @@
-# Docker Definition for SSH Server
+# Docker definition for SSH server
 **Docker image creates a simple ssh server for testing purposes**
 
 This server is not intended for a production environment. It is not configured with security in mind. Customize on your own.
@@ -39,7 +39,7 @@ ssh -i /my/local/dir/id_ed25519 myuser@localhost
 #myuser@e9682cac8fa4:~$
 ```
 
-### Transfer file using RSync
+### Transfer files using RSync
 The container definition also comes with rsync installed.
 Windows users could use a client like cwrsync.
 
