@@ -1,0 +1,31 @@
+FROM ubuntu:latest
+
+LABEL author="Miche Mayer" \
+      email="miche.mayer@outlook.de"
+
+ARG user=defaultuser
+ARG pw=defaultpw
+
+# Create user
+RUN apt update && apt install openssh-server sudo rsync -y
+RUN useradd -rm -d /home/$user -s /bin/bash -g root -G sudo -u 1000 $user
+RUN  echo "${user}:${pw}" | chpasswd
+
+#  Create key pair
+RUN mkdir -p /home/$user/.ssh && touch /home/$user/.ssh/authorized_keys
+RUN ssh-keygen -t ed25519 -f /home/$user/.ssh/id_ed25519 -C michemayer.de/ssh-server-dockerimage -q -N ""
+RUN ls /home/$user/.ssh
+RUN cat /home/$user/.ssh/id_ed25519.pub >> /home/$user/.ssh/authorized_keys
+RUN rm /home/$user/.ssh/id_ed25519.pub
+
+# Set owner and permissions for ssh dir and keys
+RUN chown -R $user:root /home/$user/.ssh
+RUN chmod 700 /home/$user/.ssh && chmod 600 /home/$user/.ssh/authorized_keys
+
+# RUN   sed -i "s|#PasswordAuthentication yes|PasswordAuthentication no|g" /etc/ssh/sshd_config
+
+RUN service ssh start
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd","-D"]
